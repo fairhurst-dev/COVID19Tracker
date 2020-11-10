@@ -33,22 +33,27 @@
         </div>
 
         <div class="form">
-            <form>
-			<label for="first">First name:</label><br>
-			<input type="text" id="first" name="first"><br>
-			<label for="last">Last name:</label><br>
-			<input type="text" id="last" name="last">
-			<label for="zip">Zip code:</label>
-			<input type="number" id="zip" name="zip" min="00000" max="99999">
-			<label for="DOB">Enter Your Date of Birth:</label>
-			<input type="date" id="DOB" name="DOB">
-			<label for="household">Enter number of people who live in your household</label>
-			<input type="number" id="household" name="household" min="0" max="25">
+            <form action="" method="POST">
+				<label for="first">First name:</label><br>
+				<input type="text" id="first" name="first"><br>
+				<label for="last">Last name:</label><br>
+				<input type="text" id="last" name="last">
+				<label for="zip">Zip code:</label>
+				<input type="number" id="zip" name="zip" min="07001" max="08989">
+				<label for="DOB">Enter Your Date of Birth:</label>
+				<input type="date" id="DOB" name="DOB">
+				<label for="household">Enter number of people who live in your household</label>
+				<input type="number" id="household" name="household" min="0" max="25">
+
+				<input type="submit" value="Enter">
 		  </form>
 
         </div>
 
         <div class="resources">
+
+
+
             <a href="{{ url_for('draw_map') }}">Click here to view a heatmap of reported NJ COVID-19 symptoms</a>
 
         </div>
