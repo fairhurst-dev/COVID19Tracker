@@ -2,50 +2,59 @@
 <html>
 	<head>
 		<!-- meta charset="utf-8"-->
-		<title></title>
+		<title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 
 	<body>
 
-		<h1>COVID-19 SYMPTOM TRACKER</h1>
+        <div class="intro">
+            <h1>COVID-19 SYMPTOM TRACKER</h1>
 		<h2>What is this?</h2>
 		<p>Coronavirus disease 2019 (COVID-19) is a new illness that affects the lungs,
-			airways, and blood vessels. The time it takes to develop COVID-19 
-			symptoms can range from one to fourteen days. This symptom checker 
-			will assess your likelihood of being infected with disease. This application will also 
+			airways, and blood vessels. The time it takes to develop COVID-19
+			symptoms can range from one to fourteen days. This symptom checker
+			will assess your likelihood of being infected with disease. This application will also
 			display a heat map to help you and your loved ones understand which areas of
-			New Jersey are reporting high amounts of COVID-19 cases. 
+			New Jersey are reporting high amounts of COVID-19 cases.
 		</p>
 		<h2>Why should I take this?</h2>
 		<p>You can complete this survey for yourself or on behalf of someone who is unable
 			to. With increased public knowledge of symptoms and exposure, we can work
-			together to end this virus. This survey is intended to be a tool in making informed 
-			decisions. The COVID-19 Symptom Survey is not professional medical advice.  
+			together to end this virus. This survey is intended to be a tool in making informed
+			decisions. The COVID-19 Symptom Survey is not professional medical advice.
 		</p>
 
 		<h2>Where can I get more information?</h2>
-		<p>You should consult with a licensed healthcare provider with further questions. For 
+		<p>You should consult with a licensed healthcare provider with further questions. For
 			more information, visit <a href="covid19.nj.gov"> covid19.nj.gov </a>
 		</p>
+        </div>
 
-		<form>
+        <div class="form">
+            <form>
 			<label for="first">First name:</label><br>
 			<input type="text" id="first" name="first"><br>
 			<label for="last">Last name:</label><br>
 			<input type="text" id="last" name="last">
 			<label for="zip">Zip code:</label>
-			<input type="number" id="zip" name="zip" min="00000" max="99999"> 
+			<input type="number" id="zip" name="zip" min="00000" max="99999">
 			<label for="DOB">Enter Your Date of Birth:</label>
 			<input type="date" id="DOB" name="DOB">
 			<label for="household">Enter number of people who live in your household</label>
-			<input type="number" id="household" name="household" min="0" max="25"> 
-		  </form> 
+			<input type="number" id="household" name="household" min="0" max="25">
+		  </form>
 
-		  <a href="">Next</a>
+        </div>
 
-	</body>
+        <div class="resources">
+            <a href="{{ url_for('draw_map') }}">Click here to view a heatmap of reported NJ COVID-19 symptoms</a>
+
+        </div>
+
+        <a href="{{ url_for('display_emergency_symptoms') }}">Next</a>
+
+    </body>
+
 </html>
-
-        

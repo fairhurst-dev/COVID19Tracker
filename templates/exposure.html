@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <div class="title_info">
+        <h2>Within the last 10 days have you:</h2>
+        <h3>(Check all that apply)</h3>
+        </div>
+
+        <div class="checkbox form exposure">
+             <form method="POST" action="/exposure">
+                 <input type="checkbox" id="diagnosed" name="exposure" value="1">
+                 <label for="diagnosed">Been diagnosed with COVID-19?</label><br>
+                 <input type="checkbox" id="positive" name="exposure" value="2">
+                 <label for="positive">Tested positive for COVID-19?</label><br>
+                 <input type="checkbox" id="quarantine" name="exposure" value="3">
+                 <label for="quarantine">Been told to quarantine by a licensed medical doctor?</label><br>
+
+                 <br>
+                 <br>
+                 <br>
+                <input type="checkbox" id="6feet" name="exposure" value="4">
+                <label for="6feet">Been within 6 feet for more than 10 minutes with someone who has COVID-19?</label><br>
+                <input type="checkbox" id="coughedon" name="exposure" value="5">
+                <label for="coughedon">Been coughed on by someone who has COVID-19?</label><br>
+                <input type="checkbox" id="lived" name="exposure" value="6">
+                <label for="lived">Lived in the same house as someone who has COVID-19?</label><br>
+                <input type="submit">
+        </div>
+
+
+            <a href="{{ url_for('display_emergency_symptoms') }}">Back</a>
+
+    </body>
+
+</html>
