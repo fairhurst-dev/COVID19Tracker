@@ -36,7 +36,7 @@ def display_survey_results():
     return render_template('view_survey_results.html')
 
 @app.route('/drawMap')
-draw_map():
+def draw_map():
     map_data = pd.read_csv('./Data/us-zip-codes-cleaned.csv')
     lat = map_data['Lat'].mean()
     lon = map_data['Long'].mean()
