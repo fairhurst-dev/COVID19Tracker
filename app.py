@@ -8,8 +8,12 @@ import re
 import pandas as pd
 import folium
 from folium.plugins import HeatMap
+from CovidPython import last_risk
 
 app = Flask(__name__)
+
+imported_zip = last_risk[0]
+new_risk = last_risk[3] * 100
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -81,25 +85,43 @@ def display_survey_results():
 
 @app.route('/drawMap')
 def draw_map():
+    update()
+
     map_data = pd.read_csv('./Data/us-zip-codes-cleaned.csv')
-    lat = map_data['Lat'].mean()
-    lon = map_data['Long'].mean()
-    startingLocation = [lat, lon]  # [40.05, 74.40]
+    
+    lat = last_risk[1]
+    lon = last_risk[2]
+
+    startingLocation = [lat, lon]  # starting location of the map depending on the inputed zipcode
     hmap = folium.Map(location=startingLocation, zoom_start=8)
     max_amount = map_data['Risk'].max()
     hm_wide = HeatMap(
         list(zip(map_data.Lat.values, map_data.Long.values, map_data.Risk.values)),
-        min_opacity=0.05,
+        min_opacity=0.1, max_zoom=9,
         max_val=max_amount,
-        radius=25, blur=15,
-        max_zoom=4)
+        radius=25, blur=20
+        )
 
     # Adds the heatmap element to the map
     hmap.add_child(hm_wide)
     # Saves the map to heatmap.html
     hmap.save(os.path.join('./templates', 'heatmap.html'))
     # Render the heatmap
+
     return render_template('heatmap.html')
+
+
+def update():
+    df = pd.read_csv('./Data/us-zip-codes-cleaned.csv', sep=',')
+
+    df.set_index('Zipcode', inplace=True)
+
+    df.at[imported_zip, 'Risk'] = new_risk
+
+    df.to_csv(r'./Data/us-zip-codes-cleaned.csv')
+
+    return last_risk
+
 
 app.run(host='localhost', port=5000)
 
