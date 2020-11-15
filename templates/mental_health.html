@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!-- Got help with slider styling with https://www.w3schools.com/howto/howto_js_rangeslider.asp -->
+<style>
+
+
+    .slidecontainer {
+        width: 50%; /* set to be half!*/
+    }
+
+    .slider {
+        width: 100%;
+        height: 25px;
+        background: #d3d3d3;
+    }
+
+        /* changes just the actual slider part */
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #0066cc; /* make it blue */
+            cursor: pointer; /* Cursor on hover */
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: #0066cc; /* make it blue */
+            cursor: pointer; /* Cursor on hover */
+        }
+</style>
+
+<script>
+    var slider = document.getElementById("range"); // identifies the slider
+    var output = document.getElementById("slider_output"); //identifies the output value of the slider
+    output.innerHTML = slider.value; //links output variable to slider output
+
+    // this updates the output variable
+    slider.oninput = function () {
+        output.innerHTML = this.value;
+    }
+
+</script>
+
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
+</head>
+
+<body>
+    <div class="title_info">
+        <h1 style="text-align:center">NEW JERSEY COVID-19 SYMPTOM TRACKER</h1>
+        <br />
+        <br />
+        <br />
+
+        <h2 style="text-align:center">How is your mental health today?</h2>
+        <p style="text-align:center">(Please move the slider appropriately)</p>
+    </div>
+
+    <!-- needs code to update emoticon here-->
+
+    <br />
+
+    <center>
+        <div class="slidecontainer">
+             <form method="POST" action="/mental_health">
+                 <input type="range" min="0" max="10" value="5" class="slider" id="mental" name="mental">
+                 <input type="submit">
+        </div>
+    </center>
+
+
+    <br />
+    <br />
+    <br />
+
+    <a href="{{ url_for('wellness_data') }}">Back</a>
+    <a href="{{ url_for('display_survey_results') }}">Submit</a>
+
+
+</body>
+
+</html>

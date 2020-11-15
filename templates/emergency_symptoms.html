@@ -14,19 +14,19 @@
 
         <div class="checkbox form emergency">
             <form method="POST" action="/emergency_symptoms">
-                <input type="checkbox" id="breathing" name="emergency" value="1">
+                <input type="checkbox" id="breathing" name="emergency" value="breathing">
                 <label for="breathing">Extreme difficulty breathing</label><br>
-                <input type="checkbox" id="blue" name="emergency" value="2">
+                <input type="checkbox" id="blue" name="emergency" value="blue">
                 <label for="blue">Blue-colored lips or face</label><br>
-                <input type="checkbox" id="chest" name="emergency" value="3">
+                <input type="checkbox" id="chest" name="emergency" value="chest">
                 <label for="chest">Severe pain or pressure in the chest</label><br>
-                <input type="checkbox" id="dizziness" name="emergency" value="4">
+                <input type="checkbox" id="dizziness" name="emergency" value="dizziness">
                 <label for="dizziness">Sever constant dizziness or light-headeness</label><br>
-                <input type="checkbox" id="confused" name="emergency" value="5">
+                <input type="checkbox" id="confused" name="emergency" value="confused">
                 <label for="confused">Acting confused</label><br>
-                <input type="checkbox" id="speech" name="emergency" value="6">
+                <input type="checkbox" id="speech" name="emergency" value="speech">
                 <label for="speech">Slurred speech</label><br>
-                <input type="checkbox" id="seizures" name="emergency" value="7">
+                <input type="checkbox" id="seizures" name="emergency" value="seizures">
                 <label for="seizures">Seizures</label><br>
                 <input type="submit">
 
@@ -34,8 +34,8 @@
 
         </div>
 
-            <a href="{{ url_for('display_intro') }}">Back</a>
-            <a href="{{ url_for('display_exposure') }}">Next</a>
+            <a href="{{ url_for('baseline_data') }}">Back</a>
+            <a href="{{ url_for('exposure_data') }}">Next</a>
 
 
     </body>

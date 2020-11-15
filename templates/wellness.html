@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
+</head>
+
+<body>
+
+    <div class="wellness covid survey">
+
+        <form method="POST" action="/wellness">
+
+            <h1>Check all of the symptoms you are experiencing today:</h1>
+
+            <input type="checkbox" id="fever" name="wellness" value="fever">
+            <label for="fever">Fever or chills</label><br>
+
+            <input type="checkbox" id="cough" name="wellness" value="cough">
+            <label for="cough">Cough</label><br>
+
+            <input type="checkbox" id="short_breath" name="wellness" value="short_breath">
+            <label for="short_breath">Shortness of breath</label><br>
+
+            <input type="checkbox" id="fatigue" name="wellness" value="1">
+            <label for="fatigue">Fatigue</label><br>
+
+            <input type="checkbox" id="aches" name="wellness" value="fatigue">
+            <label for="aches">Muscle or body aches</label><br />
+
+            <input type="checkbox" id="headaches" name="headaches" value="headaches">
+            <label for="headaches">Headaches</label><br />
+
+            <input type="checkbox" id="no_taste" name="wellness" value="no_taste">
+            <label for="no_taste">Loss of taste or smell</label><br>
+
+            <input type="checkbox" id="sore_throat" name="wellness" value="sore_throat">
+            <label for="sore_throat">Sore Throat</label><br>
+
+            <input type="checkbox" id="congestion" name="wellness" value="congestion">
+            <label for="congestion">Congestion or runny nose</label><br>
+
+            <input type="checkbox" id="nausea" name="wellness" value="nausea">
+            <label for="nausea">Nausea or vomiting</label><br>
+
+            <h1>Check all of the chronic conditions you have:</h1>
+
+
+
+            <input type="checkbox" id="lung_disease" name="wellness" value="lung_disease">
+            <label for="lung_disease">Chronic lung disease</label><br>
+
+            <input type="checkbox" id="heart_conditions" name="wellness" value="heart_conditions">
+            <label for="heart_conditions">Heart conditions</label><br>
+
+            <input type="checkbox" id="weak_immune_system" name="wellness" value="weak_immune_system">
+            <label for="weak_immune_system">Weakened immune system</label><br>
+
+            <input type="checkbox" id="obesity" name="wellness" value="obesity">
+            <label for="obesity">Obesity</label><br>
+
+            <input type="checkbox" id="smokes" name="wellness" value="smokes">
+            <label for="smokes">Smokes cigarettes</label><br />
+
+            <input type="checkbox" id="diabetes" name="wellness" value="diabetes">
+            <label for="diabetes">Diabetes</label><br>
+
+            <input type="checkbox" id="blood_pressure" name="wellness" value="blood_pressure">
+            <label for="blood_pressure">High blood pressure</label><br>
+
+            <input type="checkbox" id="nose" name="blood_disorder" value="nose">
+            <label for="blood_disorder">Blood disorder</label><br>
+
+            <input type="checkbox" id="neurological" name="wellness" value="neurological">
+            <label for="neurological">Nausea or vomiting</label><br>
+
+            <input type="checkbox" id="cancer" name="wellness" value="cancer">
+            <label for="cancer">Cerebrovascular or neurological disease</label><br>
+
+            <input type="submit">
+        </form>
+
+    </div>
+
+            <a href="{{ url_for('exposure_data') }}">Back</a>
+            <a href="{{ url_for('mental_health_data') }}">Next</a>
+</body>
+
