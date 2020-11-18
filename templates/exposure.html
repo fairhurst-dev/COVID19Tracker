@@ -13,7 +13,7 @@
         </div>
 
         <div class="checkbox form exposure">
-             <form method="POST" action="/exposure">
+             <form method="POST" action="{{ url_for('wellness_data') }}">
                  <input type="checkbox" id="diagnosed" name="exposure" value="diagnosed">
                  <label for="diagnosed">Been diagnosed with COVID-19?</label><br>
                  <input type="checkbox" id="positive" name="exposure" value="positive">
@@ -30,12 +30,12 @@
                 <label for="coughedon">Been coughed on by someone who has COVID-19?</label><br>
                 <input type="checkbox" id="lived" name="exposure" value="lived">
                 <label for="lived">Lived in the same house as someone who has COVID-19?</label><br>
-                <input type="submit">
+
+                 <input type="submit" value="Next">
         </div>
 
 
             <a href="{{ url_for('emergency_data') }}">Back</a>
-            <a href="{{ url_for('wellness_data') }}">Next</a>
 
     </body>
 

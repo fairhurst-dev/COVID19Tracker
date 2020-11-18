@@ -24,7 +24,7 @@
         </div>
 
         <div class="emergency">
-            <form method="POST" action="/emergency_symptoms">
+            <form method="POST" action="{{ url_for('exposure_data') }}">
                 <input type="checkbox" id="breathing" name="emergency" value="breathing">
                 <label for="breathing">Extreme difficulty breathing</label><br>
                 <input type="checkbox" id="blue" name="emergency" value="blue">
@@ -39,14 +39,15 @@
                 <label for="speech">Slurred speech</label><br>
                 <input type="checkbox" id="seizures" name="emergency" value="seizures">
                 <label for="seizures">Seizures</label><br>
-                <input type="submit">
+
+                <input type="submit" value="Next">
 
             </form>
 
         </div>
 
             <a href="{{ url_for('baseline_data') }}">Back</a>
-            <a href="{{ url_for('exposure_data') }}">Next</a>
+
 
 
     </body>

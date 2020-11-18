@@ -67,9 +67,9 @@
 
     <center>
         <div class="slidecontainer">
-             <form method="POST" action="/mental_health">
+             <form method="POST" action="{{ url_for('display_survey_results') }}">
                  <input type="range" min="0" max="10" value="5" class="slider" id="mental" name="mental">
-                 <input type="submit">
+                 <input type="submit" value="Next">
         </div>
     </center>
 
@@ -79,7 +79,6 @@
     <br />
 
     <a href="{{ url_for('wellness_data') }}">Back</a>
-    <a href="{{ url_for('display_survey_results') }}">Submit</a>
 
 
 </body>

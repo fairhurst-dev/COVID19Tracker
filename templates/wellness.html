@@ -10,7 +10,7 @@
 
     <div class="wellness covid survey">
 
-        <form method="POST" action="/wellness">
+        <form method="POST" action="{{ url_for('mental_health_data') }}">
 
             <h1>Check all of the symptoms you are experiencing today:</h1>
 
@@ -78,12 +78,12 @@
             <input type="checkbox" id="cancer" name="wellness" value="cancer">
             <label for="cancer">Cerebrovascular or neurological disease</label><br>
 
-            <input type="submit">
+            <input type="submit" value="Next">
         </form>
 
     </div>
 
             <a href="{{ url_for('exposure_data') }}">Back</a>
-            <a href="{{ url_for('mental_health_data') }}">Next</a>
+
 </body>
 

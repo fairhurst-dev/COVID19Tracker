@@ -8,10 +8,7 @@
     	min-height: 100%
     	}
 
-    h1 {
-        text-align: center;
-        color: #059a3d
-    }
+
     h2 {
         text-align: center;
         color: #059a3d
@@ -30,7 +27,6 @@
       }
 
       .baseline{
-
 
         padding: 40px 40px 40px 40px;
         display: grid;
@@ -53,7 +49,7 @@
 	<head>
 		<!-- meta charset="utf-8"-->
 		<title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
-		<link rel="stylesheet" href="/static/style.css">
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
 		<link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
 	</head>
@@ -116,7 +112,7 @@
 
             </div>
 
-				<input type="submit" value="Next"></input>
+				<input type="submit" value="Next">
 
 		  </form>
 
