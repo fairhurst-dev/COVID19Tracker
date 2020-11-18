@@ -1,84 +1,46 @@
 <!DOCTYPE html>
-<style>
-    * {
-      font-family: 'Ubuntu', sans-serif;
-    }
-
-    body {
-    	min-height: 100%
-    	}
-
-
-    h2 {
-        text-align: center;
-        color: #059a3d
-    }
-
-    .intro {
-        padding: 0px 20px 20px 20px;
-        justify-content: center;
-        background: url("img/nj.png") repeat 0,0;
-
-      }
-
-     p {
-        padding: 0px 40px 0px 40px;
-
-      }
-
-      .baseline{
-
-        padding: 40px 40px 40px 40px;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 0.5fr 0.5fr 0.5fr;
-        gap: 20px 20px;
-        grid-template-areas:
-            "first last"
-            "zip"
-            "DOB DOB house"
-        }
-
-        .form{
-            margin 50px auto 0;
-          }
-
-</style>
 
 <html>
 	<head>
 		<!-- meta charset="utf-8"-->
-		<title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
-		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+        <title>NJ COVID-19 Tracker</title>
+		<link rel= "stylesheet" type= "text/css" href=""{{ url_for('static',filename='styles/mainpage.css') }}">
 		<link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
 	</head>
 
-	<body>
+
+
+    <body>
+        <img class="mySlides" src="banner.jpg" alt="custom_html_banner1" style="width:100%">
+
 
         <h1>COVID-19 SYMPTOM TRACKER</h1>
 
         <div class="intro">
 
-		<h2>What is this?</h2>
-		<p>Coronavirus disease 2019 (COVID-19) is a new illness that affects the lungs,
-			airways, and blood vessels. The time it takes to develop COVID-19
-			symptoms can range from one to fourteen days. This symptom checker
-			will assess your likelihood of being infected with disease. This application will also
-			display a heat map to help you and your loved ones understand which areas of
-			New Jersey are reporting high amounts of COVID-19 cases.
-		</p>
-		<h2>Why should I take this?</h2>
-		<p>You can complete this survey for yourself or on behalf of someone who is unable
-			to. With increased public knowledge of symptoms and exposure, we can work
-			together to end this virus. This survey is intended to be a tool in making informed
-			decisions. The COVID-19 Symptom Survey is not professional medical advice.
-		</p>
+            <h2>What is this?</h2>
+            <p>
+                Coronavirus disease 2019 (COVID-19) is a new illness that affects the lungs,
+                airways, and blood vessels. The time it takes to develop COVID-19
+                symptoms can range from one to fourteen days. This symptom checker
+                will assess your likelihood of being infected with disease. This application will also
+                display a heat map to help you and your loved ones understand which areas of
+                New Jersey are reporting high amounts of COVID-19 cases.
+            </p>
+            <h2>Why should I take this?</h2>
+            <p>
+                You can complete this survey for yourself or on behalf of someone who is unable
+                to. With increased public knowledge of symptoms and exposure, we can work
+                together to end this virus. This survey is intended to be a tool in making informed
+                decisions. The COVID-19 Symptom Survey is not professional medical advice.
+            </p>
 
-		<h2>Where can I get more information?</h2>
-		<p>You should consult with a licensed healthcare provider with further questions. For
-			more information, visit <a href="covid19.nj.gov"> covid19.nj.gov </a>
-		</p>
+            <h2>Where can I get more information?</h2>
+            <p>
+                You should consult with a licensed healthcare provider with further questions. For
+                more information, visit <a href="covid19.nj.gov"> covid19.nj.gov </a>
+            </p>
         </div>
 
 
@@ -87,37 +49,36 @@
             <div class="baseline">
                 <div class="first">
                     <label for="first">First name:</label><br>
-				    <input type="text" id="first" name="first"><br>
+                    <input type="text" id="first" name="first"><br>
                 </div>
 
-                <div class ="last">
+                <div class="last">
                     <label for="last">Last name:</label><br>
-				    <input type="text" id="last" name="last">
+                    <input type="text" id="last" name="last">
                 </div>
 
                 <div class="zip">
                     <label for="zip">Zip code:</label>
-				    <input type="number" id="zip" name="zip" min="07001" max="08989">
+                    <input type="number" id="zip" name="zip" min="07001" max="08989">
                 </div>
 
                 <div class="DOB">
                     <label for="DOB">Enter Your Date of Birth:</label>
-				    <input type="date" id="DOB" name="DOB">
+                    <input type="date" id="DOB" name="DOB">
                 </div>
 
                 <div class="house">
                     <label for="household">Enter number of people who live in your household:</label>
-				    <input type="number" id="household" name="household" min="0" max="25">
+                    <input type="number" id="household" name="household" min="0" max="25">
                 </div>
 
             </div>
 
-				<input type="submit" value="Next">
+            <input type="submit" value="Next">
 
-		  </form>
+        </form>
 
-        </div>
-
+       
         <div class="resources">
 
 
