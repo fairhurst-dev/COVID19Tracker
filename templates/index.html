@@ -1,16 +1,69 @@
 <!DOCTYPE html>
+<style>
+    * {
+      font-family: 'Ubuntu', sans-serif;
+    }
+
+    body {
+    	min-height: 100%
+    	}
+
+    h1 {
+        text-align: center;
+        color: #059a3d
+    }
+    h2 {
+        text-align: center;
+        color: #059a3d
+    }
+
+    .intro {
+        padding: 0px 20px 20px 20px;
+        justify-content: center;
+        background: url("img/nj.png") repeat 0,0;
+
+      }
+
+     p {
+        padding: 0px 40px 0px 40px;
+
+      }
+
+      .baseline{
+
+
+        padding: 40px 40px 40px 40px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 0.5fr 0.5fr 0.5fr;
+        gap: 20px 20px;
+        grid-template-areas:
+            "first last"
+            "zip"
+            "DOB DOB house"
+        }
+
+        .form{
+            margin 50px auto 0;
+          }
+
+</style>
+
 <html>
 	<head>
 		<!-- meta charset="utf-8"-->
 		<title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+		<link rel="stylesheet" href="/static/style.css">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
 	</head>
 
 	<body>
 
+        <h1>COVID-19 SYMPTOM TRACKER</h1>
+
         <div class="intro">
-            <h1>COVID-19 SYMPTOM TRACKER</h1>
+
 		<h2>What is this?</h2>
 		<p>Coronavirus disease 2019 (COVID-19) is a new illness that affects the lungs,
 			airways, and blood vessels. The time it takes to develop COVID-19
@@ -32,20 +85,39 @@
 		</p>
         </div>
 
-        <div class="form">
-            <form action="" method="POST">
-				<label for="first">First name:</label><br>
-				<input type="text" id="first" name="first"><br>
-				<label for="last">Last name:</label><br>
-				<input type="text" id="last" name="last">
-				<label for="zip">Zip code:</label>
-				<input type="number" id="zip" name="zip" min="07001" max="08989">
-				<label for="DOB">Enter Your Date of Birth:</label>
-				<input type="date" id="DOB" name="DOB">
-				<label for="household">Enter number of people who live in your household</label>
-				<input type="number" id="household" name="household" min="0" max="25">
 
-				<input type="submit" value="Enter">
+        <form action="{{ url_for('emergency_data') }}" method="POST">
+
+            <div class="baseline">
+                <div class="first">
+                    <label for="first">First name:</label><br>
+				    <input type="text" id="first" name="first"><br>
+                </div>
+
+                <div class ="last">
+                    <label for="last">Last name:</label><br>
+				    <input type="text" id="last" name="last">
+                </div>
+
+                <div class="zip">
+                    <label for="zip">Zip code:</label>
+				    <input type="number" id="zip" name="zip" min="07001" max="08989">
+                </div>
+
+                <div class="DOB">
+                    <label for="DOB">Enter Your Date of Birth:</label>
+				    <input type="date" id="DOB" name="DOB">
+                </div>
+
+                <div class="house">
+                    <label for="household">Enter number of people who live in your household:</label>
+				    <input type="number" id="household" name="household" min="0" max="25">
+                </div>
+
+            </div>
+
+				<input type="submit" value="Next"></input>
+
 		  </form>
 
         </div>
@@ -54,11 +126,10 @@
 
 
 
-            <a href="{{ url_for('draw_map') }}">Click here to view a heatmap of reported NJ COVID-19 symptoms</a>
+            <button action="{{ url_for('draw_map') }}">Click here to view a heatmap of reported NJ COVID-19 symptoms</button>
 
         </div>
 
-        <a href="{{ url_for('emergency_data') }}">Next</a>
 
     </body>
 
