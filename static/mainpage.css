@@ -6,14 +6,40 @@
   	-moz-osx-font-smoothing: grayscale;
 }
 
+.intro {
+	text-align: center;
+}
+
+.navbar {
+	background-color#3b3c3d;
+}
+
+
+.baseline{
+
+    padding: 40px 40px 40px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.5fr 0.5fr 0.5fr;
+    gap: 20px 20px;
+    grid-template-areas:
+    "first last"
+    "zip"
+    "DOB DOB house"
+}
+
+.form{
+    margin 50px auto 0;
+}
+
 h1 {
     text-align: center;
     font-family: 'Ubuntu', sans-serif;
-    color green;
+    color:#3db54f;
 }
 
 h2{
-    color blue;
+    color:#3da1b5;
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
 }
