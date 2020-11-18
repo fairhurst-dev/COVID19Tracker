@@ -358,14 +358,14 @@ def display_survey_results():
                         calculated_severity))
 
     # get last entry
-     cursor.execute('''
-            CREATE TEMPORARY TABLE LAST_RISK
-            SELECT COLLECTED_DATA.ZIP_CODE, ZIP_CODES.LAT, ZIP_CODES.LONG, COLLECTED_DATA.CALCULATED_SEVERITY
-            FROM COLLECTED_DATA
-            JOIN ZIP_CODES ON COLLECTED_DATA.ZIP_CODE = ZIP_CODES.ZIPCODE
-            WHERE USER_ID = (
-                SELECT MAX(USER_ID) FROM COLLECTED_DATA
-                );''')
+   #  cursor.execute('''
+      #      CREATE TEMPORARY TABLE LAST_RISK
+     #       SELECT COLLECTED_DATA.ZIP_CODE, ZIP_CODES.LAT, ZIP_CODES.LONG, COLLECTED_DATA.CALCULATED_SEVERITY
+     #       FROM COLLECTED_DATA
+     #       JOIN ZIP_CODES ON COLLECTED_DATA.ZIP_CODE = ZIP_CODES.ZIPCODE
+     #       WHERE USER_ID = (
+     #           SELECT MAX(USER_ID) FROM COLLECTED_DATA
+     #           );''')
 
     # tuple of last entry's zip and severity
     last_risk = cursor.fetchall()
@@ -387,13 +387,13 @@ def display_survey_results():
 ##            FROM COLLECTED_DATA
 ##            """)
 
-    cursor.execute('''
-            DROP TEMPORARY TABLE IF EXISTS
-            LAST_RISK, SYMPTOM_COUNT, AVG_FEELING
-            ''')
-  #  app.Update()
+ #   cursor.execute('''
+        #    DROP TEMPORARY TABLE IF EXISTS
+         #   LAST_RISK, SYMPTOM_COUNT, AVG_FEELING
+        #    ''')
+  ##  app.Update()
 
-    mysql.connection.commit()
+  #  mysql.connection.commit()
     msg = 'You have successfully completed entering the data!'
 
     return render_template('view_survey_results.html')
