@@ -8,9 +8,9 @@ import redis
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'root'
+app.config['MYSQL_HOST'] = 'db-mysql-nyc1-59147-do-user-8328444-0.b.db.ondigitalocean.com'
+app.config['MYSQL_USER'] = 'doadmin'
+app.config['MYSQL_PASSWORD'] = 'nre0x18lver0tcc6'
 app.config['MYSQL_DB'] = 'COVID_DATA'
 
 app.secret_key = 'Veritas'
