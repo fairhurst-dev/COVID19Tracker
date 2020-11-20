@@ -1,22 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>NJ COVID-19 Tracker</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href=""{{ url_for('static',filename='styles/mainpage.css') }}">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
 </head>
 
 <body>
-    <img class="mySlides" src="banner.jpg" alt="custom_html_banner1" style="width:100%">
 
     <div class="wellness covid survey">
 
-        <form method="POST" action="{{ url_for('mental_health_data') }}">
+        <form method="POST" action="">
 
-            <h2>Check all of the symptoms you are experiencing today:</h2>
+            <h1>Check all of the symptoms you are experiencing today:</h1>
 
             <input type="checkbox" id="fever" name="wellness" value="fever">
             <label for="fever">Fever or chills</label><br>
@@ -48,7 +44,7 @@
             <input type="checkbox" id="nausea" name="wellness" value="nausea">
             <label for="nausea">Nausea or vomiting</label><br>
 
-            <h2>Check all of the chronic conditions you have:</h2>
+            <h1>Check all of the chronic conditions you have:</h1>
 
 
 
@@ -82,13 +78,13 @@
             <input type="checkbox" id="cancer" name="wellness" value="cancer">
             <label for="cancer">Cerebrovascular or neurological disease</label><br>
 
-            <br />
-            <input type="submit" value="Next">
+            <input type="submit" value="Submit">
         </form>
 
     </div>
 
-    <a href="{{ url_for('exposure_data') }}">Back</a>
+        <a href="{{ url_for('mental_health_data') }}">Next</a>
+        <a href="{{ url_for('exposure_data') }}">Back</a>
 
 </body>
 

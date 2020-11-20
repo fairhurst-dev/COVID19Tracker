@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!-- Got help with slider styling with https://www.w3schools.com/howto/howto_js_rangeslider.asp -->
 <style>
 
@@ -46,18 +46,13 @@
 <html lang="en">
 
 <head>
-    <title>NJ COVID-19 Tracker</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href=""{{ url_for('static',filename='styles/mainpage.css') }}">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
 </head>
 
 <body>
-    <img class="mySlides" src="banner.jpg" alt="custom_html_banner1" style="width:100%">
-
     <div class="title_info">
-        <h1 style="text-align:center">Mental Health</h1>
+        <h1 style="text-align:center">NEW JERSEY COVID-19 SYMPTOM TRACKER</h1>
         <br />
         <br />
         <br />
@@ -72,10 +67,9 @@
 
     <center>
         <div class="slidecontainer">
-            <form method="POST" action="{{ url_for('display_survey_results') }}">
-                <input type="range" min="0" max="10" value="5" class="slider" id="mental" name="mental">
-                <br />
-                <input type="submit" value="Next">
+             <form method="POST" action="">
+                 <input type="range" min="0" max="10" value="5" class="slider" id="mental" name="mental">
+                 <input type="submit" value="Submit">
         </div>
     </center>
 
@@ -85,6 +79,7 @@
     <br />
 
     <a href="{{ url_for('wellness_data') }}">Back</a>
+    <a href="{{ url_for('display_survey_results') }}">Next</a>
 
 
 </body>
