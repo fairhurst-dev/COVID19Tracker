@@ -363,50 +363,50 @@ def display_survey_results():
                         input_dict['feeling_today'],
                         calculated_severity))
 
-    # get last entry
-   #  cursor.execute('''
-      #      CREATE TEMPORARY TABLE LAST_RISK
-     #       SELECT COLLECTED_DATA.ZIP_CODE, ZIP_CODES.LAT, ZIP_CODES.LONG, COLLECTED_DATA.CALCULATED_SEVERITY
-     #       FROM COLLECTED_DATA
-     #       JOIN ZIP_CODES ON COLLECTED_DATA.ZIP_CODE = ZIP_CODES.ZIPCODE
-     #       WHERE USER_ID = (
-     #           SELECT MAX(USER_ID) FROM COLLECTED_DATA
-     #           );''')
+     get last entry
+     cursor.execute('''
+            CREATE TEMPORARY TABLE LAST_RISK
+            SELECT Collected_Data.ZIP_CODE, zip_codes.Lat, zip_codes.Long, Collected_Data.CALCULATED_SEVERITY
+            FROM Collected_Data
+            JOIN zip_codes ON Collected_Data.ZIP_CODE = zip_codes.Zipcode
+            WHERE USER_ID = (
+                SELECT MAX(USER_ID) FROM Collected_Data
+                );''')
 
-    # tuple of last entry's zip and severity
-   # last_risk = cursor.fetchall()
+    tuple of last entry's zip and severity
+    last_risk = cursor.fetchall()
 
-   # cursor.execute("""
-            #    CREATE TEMPORARY TABLE SYMPTOM_COUNT
-              #  SELECT COLLECTED_DATA.ZIP_CODE, ZIP_CODES.LAT, ZIP_CODES.LONG, AVG(COLLECTED_DATA.CALCULATED_SEVERITY)
-             #   FROM COLLECTED_DATA
-              #      JOIN ZIP_CODES ON COLLECTED_DATA.ZIP_CODE = ZIP_CODES.ZIPCODE
-#                    GROUP BY ZIP_CODE;""")
+    cursor.execute("""
+                CREATE TEMPORARY TABLE SYMPTOM_COUNT
+                SELECT Collected_Data.ZIP_CODE, zip_codes.Lat, zip_codes.Long, AVG(Collected_Data.CALCULATED_SEVERITY)
+                FROM Collected_Data
+                    JOIN zip_codes ON Collected_Data.ZIP_CODE = zip_codes.Zipcode
+                    GROUP BY ZIP_CODE;""")
 
-##avg_zip = cursor.fetchall()
-##avg_zip_list = [list(i) for i in avg_zip]
+avg_zip = cursor.fetchall()
+avg_zip_list = [list(i) for i in avg_zip]
 
 
-##cursor.execute("""
-##            CREATE TEMPORARY TABLE AVG_FEELING
-##            SELECT AVG(FEELING_TODAY)
-##            FROM COLLECTED_DATA
-##            """)
+cursor.execute("""
+            CREATE TEMPORARY TABLE AVG_FEELING
+            SELECT AVG(FEELING_TODAY)
+            FROM Collected_Data
+            """)
 
- #   cursor.execute('''
-        #    DROP TEMPORARY TABLE IF EXISTS
-         #   LAST_RISK, SYMPTOM_COUNT, AVG_FEELING
-        #    ''')
-  ##  app.Update()
+    cursor.execute('''
+            DROP TEMPORARY TABLE IF EXISTS
+            LAST_RISK, SYMPTOM_COUNT, AVG_FEELING
+            ''')
+    app.Update()
 
     mysql.connection.commit()
     msg = 'You have successfully completed entering the data!'
 
     return render_template('view_survey_results.html')
 
-#imported_zip = last_risk[0]
-#new_risk = last_risk[3] * 100
-#
+imported_zip = last_risk[0]
+new_risk = last_risk[3] * 100
+
 
 @app.route('/drawMap')
 def draw_map():
