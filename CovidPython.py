@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_mysqldb import MySQL
-from flask_session import Session
 import MySQLdb.cursors
 import re
-from os import environ
-import redis
+import pandas as pd
+import folium
+from folium.plugins import HeatMap
+import os
+
+# set FLASK_APP=CovidPython.py
 
 app = Flask(__name__)
 
@@ -13,8 +16,6 @@ app.config['MYSQL_USER'] = 'doadmin'
 app.config['MYSQL_PASSWORD'] = 'nre0x18lver0tcc6'
 app.config['MYSQL_DB'] = 'COVID_DATA'
 app.config['MYSQL_PORT'] = 25060
-
-
 
 app.secret_key = 'Veritas'
 mysql = MySQL(app)
@@ -55,7 +56,6 @@ def baseline_data():
         elif request.method == 'POST':
             msg = 'Please fill out the form!'
 
-
     return render_template('index.html', msg=msg)
 
 
@@ -63,7 +63,6 @@ def baseline_data():
 def emergency_data():
     msg = ''
     emergency_symptoms = []
-
 
     if request.method == 'POST':
         emergency_symptoms = request.form.getlist('emergency')
@@ -231,10 +230,11 @@ def wellness_data():
 
     return render_template('wellness.html', msg=msg)
 
+
 @app.route('/mental_health', methods=['GET', 'POST'])
 def mental_health_data():
     msg = ''
-    #####~~~~~NEED TO FIX THIS ~~~~##########
+    # ~~~~~NEED TO FIX THIS ~~~~
     if request.method == 'POST' and 'mental' in request.form:
         input_dict['feeling_today'] = 5
 
@@ -363,8 +363,8 @@ def display_survey_results():
                         input_dict['feeling_today'],
                         calculated_severity))
 
-     #get last entry
-     cursor.execute('''
+    # get last entry
+    cursor.execute('''
             CREATE TEMPORARY TABLE LAST_RISK
             SELECT Collected_Data.ZIP_CODE, zip_codes.Lat, zip_codes.Long, Collected_Data.CALCULATED_SEVERITY
             FROM Collected_Data
@@ -373,8 +373,10 @@ def display_survey_results():
                 SELECT MAX(USER_ID) FROM Collected_Data
                 );''')
 
-    #tuple of last entry's zip and severity
+    # tuple of last entry's zip and severity
     last_risk = cursor.fetchall()
+    imported_zip = last_risk[0]
+    new_risk = last_risk[3] * 100
 
     cursor.execute("""
                 CREATE TEMPORARY TABLE SYMPTOM_COUNT
@@ -383,11 +385,10 @@ def display_survey_results():
                     JOIN zip_codes ON Collected_Data.ZIP_CODE = zip_codes.Zipcode
                     GROUP BY ZIP_CODE;""")
 
-avg_zip = cursor.fetchall()
-avg_zip_list = [list(i) for i in avg_zip]
+    avg_zip = cursor.fetchall()
+    avg_zip_list = [list(i) for i in avg_zip]
 
-
-cursor.execute("""
+    cursor.execute("""
             CREATE TEMPORARY TABLE AVG_FEELING
             SELECT AVG(FEELING_TODAY)
             FROM Collected_Data
@@ -397,19 +398,18 @@ cursor.execute("""
             DROP TEMPORARY TABLE IF EXISTS
             LAST_RISK, SYMPTOM_COUNT, AVG_FEELING
             ''')
+
     app.Update()
 
     mysql.connection.commit()
     msg = 'You have successfully completed entering the data!'
 
-    return render_template('view_survey_results.html')
-
-imported_zip = last_risk[0]
-new_risk = last_risk[3] * 100
+    return render_template('view_survey_results.html'), last_risk, imported_zip, new_risk
 
 
 @app.route('/drawMap')
 def draw_map():
+
     update()
 
     map_data = pd.read_csv('./Data/us-zip-codes-cleaned.csv')
@@ -417,8 +417,8 @@ def draw_map():
     lat = last_risk[1]
     lon = last_risk[2]
 
-    startingLocation = [lat, lon]  # starting location of the map depending on the inputed zipcode
-    hmap = folium.Map(location=startingLocation, zoom_start=8)
+    starting_location = [lat, lon]  # starting location of the map depending on the inputted zipcode
+    h_map = folium.Map(location=starting_location, zoom_start=8)
     max_amount = map_data['Risk'].max()
     hm_wide = HeatMap(
         list(zip(map_data.Lat.values, map_data.Long.values, map_data.Risk.values)),
@@ -428,15 +428,16 @@ def draw_map():
     )
 
     # Adds the heatmap element to the map
-    hmap.add_child(hm_wide)
+    h_map.add_child(hm_wide)
     # Saves the map to heatmap.html
-    hmap.save(os.path.join('./templates', 'heatmap.html'))
+    h_map.save(os.path.join('./templates', 'heatmap.html'))
     # Render the heatmap
 
     return render_template('heatmap.html')
 
 
 def update():
+
     df = pd.read_csv('./Data/us-zip-codes-cleaned.csv', sep=',')
 
     df.set_index('Zipcode', inplace=True)
@@ -449,3 +450,4 @@ def update():
 
 
 app.run(host='localhost', port=5000)
+
