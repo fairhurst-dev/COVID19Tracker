@@ -363,7 +363,7 @@ def display_survey_results():
                         input_dict['feeling_today'],
                         calculated_severity))
 
-     get last entry
+     #get last entry
      cursor.execute('''
             CREATE TEMPORARY TABLE LAST_RISK
             SELECT Collected_Data.ZIP_CODE, zip_codes.Lat, zip_codes.Long, Collected_Data.CALCULATED_SEVERITY
@@ -373,7 +373,7 @@ def display_survey_results():
                 SELECT MAX(USER_ID) FROM Collected_Data
                 );''')
 
-    tuple of last entry's zip and severity
+    #tuple of last entry's zip and severity
     last_risk = cursor.fetchall()
 
     cursor.execute("""
