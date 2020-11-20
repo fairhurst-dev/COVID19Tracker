@@ -12,6 +12,9 @@ app.config['MYSQL_HOST'] = 'db-mysql-nyc1-59147-do-user-8328444-0.b.db.ondigital
 app.config['MYSQL_USER'] = 'doadmin'
 app.config['MYSQL_PASSWORD'] = 'nre0x18lver0tcc6'
 app.config['MYSQL_DB'] = 'COVID_DATA'
+app.config['MYSQL_PORT'] = 25060
+
+
 
 app.secret_key = 'Veritas'
 mysql = MySQL(app)
@@ -21,14 +24,14 @@ input_dict = {'first_name': None, 'last_name': None, 'zip_code' : None, 'date_of
           'positive_test': 0, 'quarantine': 0, 'close_proximity': 0, 'coughed_on': 0, 'same_house': 0, 'fever': 0, 'cough':0,
           'short_breath': 0, 'fatigue': 0, 'aches': 0, 'headaches': 0, 'no_taste': 0, 'sore_throat': 0, 'congestion': 0,
           'nausea': 0, 'lung_disease': 0, 'heart_condition': 0, 'weak_immune_system': 0, 'obesity': 0, 'smokes': 0, 'diabetes': 0,
-          'high_blood_pressure': 0, 'blood_disorder': 0, 'neurological_disorder': 0, 'cancer': 0, 'feeling_today': 0, 'calculated_severity':0 }
+          'high_blood_pressure': 0, 'blood_disorder': 0, 'neurological_disorder': 0, 'cancer': 0, 'feeling_today': 0, 'calculated_severity': 0 }
 
 
 @app.route('/', methods=['GET', 'POST'])
 def baseline_data():
     msg = ''
 
-    if request.method == 'POST' and 'first' in request.form and 'last' in request.form and 'zip' in request.form and 'DOB' in request.form and 'household' in request.form:
+    if request.method == 'POST':
         input_dict['first_name'] = request.form['first']
         input_dict['last_name'] = request.form['last']
         input_dict['zip_code'] = request.form['zip']
@@ -51,6 +54,7 @@ def baseline_data():
             msg = 'Please fill out the form!'
         elif request.method == 'POST':
             msg = 'Please fill out the form!'
+
 
     return render_template('index.html', msg=msg)
 
@@ -135,7 +139,7 @@ def exposure_data():
 @app.route('/wellness', methods=['GET', 'POST'])
 def wellness_data():
     msg = ''
-    wellnes = []
+    wellness = []
 
     if request.method == 'POST':
 
@@ -266,7 +270,9 @@ def display_survey_results():
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    cursor.execute('''INSERT INTO COLLECTED_DATA (
+    print(input_dict)
+
+    cursor.execute('''INSERT INTO Collected_Data (
                          FIRST_NAME,
                          LAST_NAME,
                          ZIP_CODE,
@@ -368,14 +374,14 @@ def display_survey_results():
      #           );''')
 
     # tuple of last entry's zip and severity
-    last_risk = cursor.fetchall()
+   # last_risk = cursor.fetchall()
 
-    cursor.execute("""
-                CREATE TEMPORARY TABLE SYMPTOM_COUNT
-                SELECT COLLECTED_DATA.ZIP_CODE, ZIP_CODES.LAT, ZIP_CODES.LONG, AVG(COLLECTED_DATA.CALCULATED_SEVERITY)
-                FROM COLLECTED_DATA
-                    JOIN ZIP_CODES ON COLLECTED_DATA.ZIP_CODE = ZIP_CODES.ZIPCODE
-                    GROUP BY ZIP_CODE;""")
+   # cursor.execute("""
+            #    CREATE TEMPORARY TABLE SYMPTOM_COUNT
+              #  SELECT COLLECTED_DATA.ZIP_CODE, ZIP_CODES.LAT, ZIP_CODES.LONG, AVG(COLLECTED_DATA.CALCULATED_SEVERITY)
+             #   FROM COLLECTED_DATA
+              #      JOIN ZIP_CODES ON COLLECTED_DATA.ZIP_CODE = ZIP_CODES.ZIPCODE
+#                    GROUP BY ZIP_CODE;""")
 
 ##avg_zip = cursor.fetchall()
 ##avg_zip_list = [list(i) for i in avg_zip]
@@ -393,7 +399,7 @@ def display_survey_results():
         #    ''')
   ##  app.Update()
 
-  #  mysql.connection.commit()
+    mysql.connection.commit()
     msg = 'You have successfully completed entering the data!'
 
     return render_template('view_survey_results.html')
