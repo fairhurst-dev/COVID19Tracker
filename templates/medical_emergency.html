@@ -15,10 +15,10 @@
 <body>
     <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
 
-    <div class="topnav">
+    <div class="navbar">
         <center>
-            <a href="index.html">Home</a>
-            <a href="heatmap.html">Heatmap</a>
+            <a href="{{ url_for('baseline_data') }}">Home</a>
+            <a href="{{ url_for('draw_map') }}">Heatmap</a>
             <a href="https://covid19.nj.gov">Resources</a>
         </center>
     </div>
