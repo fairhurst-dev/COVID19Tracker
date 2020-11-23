@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html>
+<style>
+    h3{
+        color:red;
+    }
+</style>
 <head>
-    <title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
-    <style>
-        h1 {
-            color: red;
-        }
-    </style>
+    <title>NJ COVID-19 Tracker</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/mainpage.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-
-
-    <br />
-    <br />
-    <br />
-    <br />
-    <h1 class="redtext" style="text-align:center;">Call 911. You may be having a medical emergency.</h1>
-    <h1 style="text-align:center;">If you go to the emergency department,</h1>
-    <h1 style="text-align:center;">call ahead to let them know you are coming.</h1>
+    <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
 
     <br />
     <br />
     <br />
     <br />
+    <h3 class="redtext" style="text-align:center;">Call 911. You may be having a medical emergency.</h3>
+    <h3 style="text-align:center;">If you go to the emergency department,</h3>
+    <h3 style="text-align:center;">call ahead to let them know you are coming.</h3>
+
+    <br />
+    <br />
+    <br />
+    <br />
     <br />
     <br />
     <br />
     <br />
 
-      <a href="{{ url_for('display_intro') }}">Back</a>
+    <a href="{{ url_for('display_intro') }}">Back</a>
 
 </body>
 </html>
