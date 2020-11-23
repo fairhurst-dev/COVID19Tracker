@@ -6,7 +6,6 @@ import pandas as pd
 import folium
 from folium.plugins import HeatMap
 import os
-
 # set FLASK_APP=CovidPython.py
 
 app = Flask(__name__)
@@ -255,22 +254,19 @@ def display_survey_results():
                 input_dict['blood_disorder'], input_dict['neurological_disorder'], input_dict['cancer']]
 
     total_symptoms = 0
-    calculated_severity = 0
 
     # calculate severity by averaging number of check boxes
     for x in symptoms:
         if x == 1:
             total_symptoms += 1
 
-    calculated_severity = total_symptoms / 33
+    input_dict['calculated_severity'] = round(total_symptoms / 33, 3)
 
     # immediate high severity for checking positive test or COVID diagnosis
     if input_dict['COVID_diagnosis'] or input_dict['positive_test'] == 1:
-        calculated_severity = 1.00
+        input_dict['calculated_severity'] = 1.00
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-
-    print(input_dict)
 
     cursor.execute('''INSERT INTO Collected_Data (
                          FIRST_NAME,
@@ -361,50 +357,11 @@ def display_survey_results():
                         input_dict['neurological_disorder'],
                         input_dict['cancer'],
                         input_dict['feeling_today'],
-                        calculated_severity))
-
-    # get last entry
-    cursor.execute('''
-            CREATE TEMPORARY TABLE LAST_RISK
-            SELECT Collected_Data.ZIP_CODE, zip_codes.Lat, zip_codes.Long, Collected_Data.CALCULATED_SEVERITY
-            FROM Collected_Data
-            JOIN zip_codes ON Collected_Data.ZIP_CODE = zip_codes.Zipcode
-            WHERE USER_ID = (
-                SELECT MAX(USER_ID) FROM Collected_Data
-                );''')
-
-    # tuple of last entry's zip and severity
-    last_risk = cursor.fetchall()
-    imported_zip = last_risk[0]
-    new_risk = last_risk[3] * 100
-
-    cursor.execute("""
-                CREATE TEMPORARY TABLE SYMPTOM_COUNT
-                SELECT Collected_Data.ZIP_CODE, zip_codes.Lat, zip_codes.Long, AVG(Collected_Data.CALCULATED_SEVERITY)
-                FROM Collected_Data
-                    JOIN zip_codes ON Collected_Data.ZIP_CODE = zip_codes.Zipcode
-                    GROUP BY ZIP_CODE;""")
-
-    avg_zip = cursor.fetchall()
-    avg_zip_list = [list(i) for i in avg_zip]
-
-    cursor.execute("""
-            CREATE TEMPORARY TABLE AVG_FEELING
-            SELECT AVG(FEELING_TODAY)
-            FROM Collected_Data
-            """)
-
-    cursor.execute('''
-            DROP TEMPORARY TABLE IF EXISTS
-            LAST_RISK, SYMPTOM_COUNT, AVG_FEELING
-            ''')
-
-    app.Update()
+                        input_dict['calculated_severity']))
 
     mysql.connection.commit()
     msg = 'You have successfully completed entering the data!'
-
-    return render_template('view_survey_results.html'), last_risk, imported_zip, new_risk
+    return render_template('view_survey_results.html')
 
 
 @app.route('/drawMap')
@@ -414,8 +371,8 @@ def draw_map():
 
     map_data = pd.read_csv('./Data/us-zip-codes-cleaned.csv')
 
-    lat = last_risk[1]
-    lon = last_risk[2]
+    lat = 40.05
+    lon = -74.40
 
     starting_location = [lat, lon]  # starting location of the map depending on the inputted zipcode
     h_map = folium.Map(location=starting_location, zoom_start=8)
@@ -426,28 +383,25 @@ def draw_map():
         max_val=max_amount,
         radius=25, blur=20
     )
-
     # Adds the heatmap element to the map
     h_map.add_child(hm_wide)
     # Saves the map to heatmap.html
     h_map.save(os.path.join('./templates', 'heatmap.html'))
     # Render the heatmap
-
     return render_template('heatmap.html')
 
 
 def update():
 
+    new_risk = round(input_dict['calculated_severity'] * 100, 3)
+
     df = pd.read_csv('./Data/us-zip-codes-cleaned.csv', sep=',')
 
-    df.set_index('Zipcode', inplace=True)
-
-    df.at[imported_zip, 'Risk'] = new_risk
+    df.loc[(df.Zipcode == input_dict['zip_code']), 'Risk'] = new_risk
 
     df.to_csv(r'./Data/us-zip-codes-cleaned.csv')
 
-    return last_risk
+    return
 
 
 app.run(host='localhost', port=5000)
-
