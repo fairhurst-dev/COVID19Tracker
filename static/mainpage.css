@@ -6,14 +6,16 @@
   	-moz-osx-font-smoothing: grayscale;
 }
 
+body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
 .intro {
 	text-align: center;
 }
-
-.navbar {
-	background-color#3b3c3d;
-}
-
 
 .baseline{
 
@@ -48,4 +50,27 @@ h3{
 
     font-family: 'Ubuntu', sans-serif;
     font-weight: bold;
+}
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #5b5d5e;
+  overflow: hidden;
+
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+
+  color: #f2f2f2;
+  text-align: center;
+  padding: 20px 10px;
+  text-decoration: none;
+  font-size: 20px;
+
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: gray;
+  color: white;
 }
