@@ -1,12 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
+<style>
+    h2 {
+        color: red;
+    }
+</style>
+
 <html>
+
 <head>
-    <title>NEW JERSEY COVID-19 SYMPTOM TRACKER</title>
-    <style>
-        h2 {
-            color: red;
-        }
-    </style>
     <title>NJ COVID-19 Tracker</title>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/mainpage.css') }}">
@@ -15,8 +16,17 @@
 </head>
 <body>
 
-    <h>View COVID-19 Survey Results</h>
     <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
+
+    <div class="topnav">
+        <center>
+            <a href="index.html">Home</a>
+            <a href="heatmap.html">Heatmap</a>
+            <a href="https://covid19.nj.gov">Resources</a>
+        </center>
+
+    </div>
+
     <h1>View COVID-19 Survey Results</h1>
     <br />
     <br />
@@ -31,3 +41,6 @@
 
 
     <br />
+
+</body>
+</html>

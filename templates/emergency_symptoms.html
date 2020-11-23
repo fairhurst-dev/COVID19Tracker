@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,7 +10,16 @@
 </head>
 
 <body>
-   <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
+    <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
+
+    <div class="topnav">
+        <center>
+            <a class="active" href="index.html">Home</a>
+            <a href="heatmap.html">Heatmap</a>
+            <a href="https://covid19.nj.gov">Resources</a>
+        </center>
+    </div>
+
 
     <div class="top_title">
         <h2>Are you experiencing any of the following?</h2>
@@ -41,8 +50,8 @@
 
     </div>
 
-        <a href="{{ url_for('baseline_data') }}">Back</a>
-        <a href="{{ url_for('wellness_data') }}">Next</a>
+    <a href="{{ url_for('baseline_data') }}">Back</a>
+    <a href="{{ url_for('wellness_data') }}">Next</a>
 
 
 
