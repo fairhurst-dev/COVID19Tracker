@@ -394,12 +394,18 @@ def draw_map():
 def update():
 
     new_risk = round(input_dict['calculated_severity'] * 100, 3)
+    imported_zip = input_dict['zip_code']
+    
+    if imported_zip[0] == "0":
+        imported_zip = imported_zip[1:]
 
     df = pd.read_csv('./Data/us-zip-codes-cleaned.csv', sep=',')
 
-    df.loc[(df.Zipcode == input_dict['zip_code']), 'Risk'] = new_risk
+    df.loc[(df.Zipcode == imported_zip), 'Risk'] = new_risk
 
-    df.to_csv(r'./Data/us-zip-codes-cleaned.csv')
+    print(df.loc[(df.Zipcode == input_dict['zip_code'])])
+
+    df.to_csv(r'./Data/us-zip-codes-cleaned.csv', index=False)
 
     return
 
