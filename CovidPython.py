@@ -19,12 +19,12 @@ app.config['MYSQL_PORT'] = 25060
 app.secret_key = 'Veritas'
 mysql = MySQL(app)
 
-input_dict = {'first_name': None, 'last_name': None, 'zip_code' : None, 'date_of_birth' : None, 'household_size': None, 'difficulty_breathing': 0,
+input_dict = {'first_name': None, 'last_name': None, 'zip_code': None, 'date_of_birth': None, 'household_size': None, 'difficulty_breathing': 0,
           'blue_lips': 0, 'chest_pain': 0, 'dizziness': 0, 'confusion': 0, 'slurring': 0, 'seizures': 0, 'COVID_diagnosis': 0,
-          'positive_test': 0, 'quarantine': 0, 'close_proximity': 0, 'coughed_on': 0, 'same_house': 0, 'fever': 0, 'cough':0,
+          'positive_test': 0, 'quarantine': 0, 'close_proximity': 0, 'coughed_on': 0, 'same_house': 0, 'fever': 0, 'cough': 0,
           'short_breath': 0, 'fatigue': 0, 'aches': 0, 'headaches': 0, 'no_taste': 0, 'sore_throat': 0, 'congestion': 0,
           'nausea': 0, 'lung_disease': 0, 'heart_condition': 0, 'weak_immune_system': 0, 'obesity': 0, 'smokes': 0, 'diabetes': 0,
-          'high_blood_pressure': 0, 'blood_disorder': 0, 'neurological_disorder': 0, 'cancer': 0, 'feeling_today': 0, 'calculated_severity': 0 }
+          'high_blood_pressure': 0, 'blood_disorder': 0, 'neurological_disorder': 0, 'cancer': 0, 'feeling_today': 0, 'calculated_severity': 0}
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -44,13 +44,13 @@ def baseline_data():
             msg = 'Last name must contain only characters!'
         elif not re.match(r'[0-9]', input_dict['zip_code']):
             msg = 'Zip code must contain only numbers!'
-        elif not re.match(r'[00000-99999]',input_dict['zip_code']):
+        elif not re.match(r'[00000-99999]', input_dict['zip_code']):
             msg = 'Zip code must be in New Jersey!'
         elif not re.match(r'[0-9]', input_dict['date_of_birth']):
             msg = 'Date of birth must contain only numbers in MMDDYYYY format!'
         elif not re.match(r'[0-50]', input_dict['household_size']):
             msg = 'Household size contain only numbers less than 50!'
-        elif not  input_dict['first_name'] or not input_dict['last_name'] or not input_dict['zip_code'] or not input_dict['date_of_birth'] or not  input_dict['household_size']:
+        elif not input_dict['first_name'] or not input_dict['last_name'] or not input_dict['zip_code'] or not input_dict['date_of_birth'] or not input_dict['household_size']:
             msg = 'Please fill out the form!'
         elif request.method == 'POST':
             msg = 'Please fill out the form!'
@@ -185,7 +185,6 @@ def wellness_data():
         else:
             input_dict['nausea'] = 0
 
-
         if 'lung_disease' in wellness:
             input_dict['lung_disease'] = 1
         else:
@@ -244,7 +243,7 @@ def mental_health_data():
 def display_survey_results():
     msg = ''
 
-    symptoms = [ input_dict['difficulty_breathing'], input_dict['blue_lips'],  input_dict['chest_pain'], input_dict['dizziness'],
+    symptoms = [input_dict['difficulty_breathing'], input_dict['blue_lips'],  input_dict['chest_pain'], input_dict['dizziness'],
                 input_dict['confusion'], input_dict['slurring'], input_dict['seizures'], input_dict['COVID_diagnosis'],
                 input_dict['positive_test'], input_dict['quarantine'],  input_dict['close_proximity'], input_dict['coughed_on'],
                 input_dict['same_house'], input_dict['fever'], input_dict['cough'], input_dict['short_breath'], input_dict['fatigue'],
@@ -395,15 +394,15 @@ def update():
 
     new_risk = round(input_dict['calculated_severity'] * 100, 3)
     imported_zip = input_dict['zip_code']
-    
+
     if imported_zip[0] == "0":
         imported_zip = imported_zip[1:]
 
     df = pd.read_csv('./Data/us-zip-codes-cleaned.csv', sep=',')
 
-    df.loc[(df.Zipcode == imported_zip), 'Risk'] = new_risk
-
-    print(df.loc[(df.Zipcode == input_dict['zip_code'])])
+    df.Zipcode = df.Zipcode.astype(str)
+    df.at[(df["Zipcode"] == imported_zip), ["Risk"]] = new_risk  # + old_risk
+    df.Zipcode = df.Zipcode.astype(int)
 
     df.to_csv(r'./Data/us-zip-codes-cleaned.csv', index=False)
 
