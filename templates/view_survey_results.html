@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <style>
-    .highResult {
-        color: #cc0000;
+    .severity {
+        color: {{ color }};
         text-align: center;
         font-weight: bold;
+        font-size: xx-large;
     }
 </style>
 
@@ -18,7 +19,7 @@
 </head>
 <body>
 
-    <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
+    <img class="mySlides" src="{{ url_for('static',filename='banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
 
     <div class="navbar">
         <center>
@@ -33,12 +34,14 @@
     <br />
     <br />
 
-    <h2 style="text-align:center;">Your calculated result is</h2>
+    <h2 style="text-align:center;">Your calculated likeliness of having COVID-19 is: </h2>
+    <br />
     <br />
 
-    <h2 class="highResult">High Risk of Infection</h2>
+    <h1 class="severity" style="text-align:center;">{{calculated_severity}}</h1>
     <br />
-    <h3 style="text-align:center;"><!-- Reference Here--></h3>
+    <br />
+
     <h3 style="text-align:center;">Please consult free COVID-19 testing sites here.</h3> <!--add link to this item-->
     <h3 style="text-align:center;">Or contact your medical provider.</h3>
 
