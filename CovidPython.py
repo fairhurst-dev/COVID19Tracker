@@ -6,6 +6,7 @@ import pandas as pd
 import folium
 from folium.plugins import HeatMap
 import os
+
 # set FLASK_APP=CovidPython.py
 
 app = Flask(__name__)
@@ -19,12 +20,18 @@ app.config['MYSQL_PORT'] = 25060
 app.secret_key = 'Veritas'
 mysql = MySQL(app)
 
-input_dict = {'first_name': None, 'last_name': None, 'zip_code': None, 'date_of_birth': None, 'household_size': None, 'difficulty_breathing': 0,
-          'blue_lips': 0, 'chest_pain': 0, 'dizziness': 0, 'confusion': 0, 'slurring': 0, 'seizures': 0, 'COVID_diagnosis': 0,
-          'positive_test': 0, 'quarantine': 0, 'close_proximity': 0, 'coughed_on': 0, 'same_house': 0, 'fever': 0, 'cough': 0,
-          'short_breath': 0, 'fatigue': 0, 'aches': 0, 'headaches': 0, 'no_taste': 0, 'sore_throat': 0, 'congestion': 0,
-          'nausea': 0, 'lung_disease': 0, 'heart_condition': 0, 'weak_immune_system': 0, 'obesity': 0, 'smokes': 0, 'diabetes': 0,
-          'high_blood_pressure': 0, 'blood_disorder': 0, 'neurological_disorder': 0, 'cancer': 0, 'feeling_today': 0, 'calculated_severity': 0}
+input_dict = {'first_name': None, 'last_name': None, 'zip_code': None, 'date_of_birth': None, 'household_size': None,
+              'difficulty_breathing': 0,
+              'blue_lips': 0, 'chest_pain': 0, 'dizziness': 0, 'confusion': 0, 'slurring': 0, 'seizures': 0,
+              'COVID_diagnosis': 0,
+              'positive_test': 0, 'quarantine': 0, 'close_proximity': 0, 'coughed_on': 0, 'same_house': 0, 'fever': 0,
+              'cough': 0,
+              'short_breath': 0, 'fatigue': 0, 'aches': 0, 'headaches': 0, 'no_taste': 0, 'sore_throat': 0,
+              'congestion': 0,
+              'nausea': 0, 'lung_disease': 0, 'heart_condition': 0, 'weak_immune_system': 0, 'obesity': 0, 'smokes': 0,
+              'diabetes': 0,
+              'high_blood_pressure': 0, 'blood_disorder': 0, 'neurological_disorder': 0, 'cancer': 0,
+              'feeling_today': 0, 'calculated_severity': 0}
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -38,9 +45,9 @@ def baseline_data():
         input_dict['date_of_birth'] = request.form['DOB']
         input_dict['household_size'] = request.form['household']
 
-        if not re.match(r'[A-Za-z]+',  input_dict['first_name']):
+        if not re.match(r'[A-Za-z]+', input_dict['first_name']):
             msg = 'First name must contain only characters!'
-        elif not re.match(r'[A-Za-z]+',  input_dict['last_name']):
+        elif not re.match(r'[A-Za-z]+', input_dict['last_name']):
             msg = 'Last name must contain only characters!'
         elif not re.match(r'[0-9]', input_dict['zip_code']):
             msg = 'Zip code must contain only numbers!'
@@ -50,18 +57,22 @@ def baseline_data():
             msg = 'Date of birth must contain only numbers in MMDDYYYY format!'
         elif not re.match(r'[0-50]', input_dict['household_size']):
             msg = 'Household size contain only numbers less than 50!'
-        elif not input_dict['first_name'] or not input_dict['last_name'] or not input_dict['zip_code'] or not input_dict['date_of_birth'] or not input_dict['household_size']:
+        elif not input_dict['first_name'] or not input_dict['last_name'] or not input_dict['zip_code'] or not \
+        input_dict['date_of_birth'] or not input_dict['household_size']:
             msg = 'Please fill out the form!'
         elif request.method == 'POST':
             msg = 'Please fill out the form!'
 
     return render_template('index.html', msg=msg)
 
-
 @app.route('/emergency_symptoms', methods=['GET', 'POST'])
 def emergency_data():
     msg = ''
-    emergency_symptoms = []
+    url= ''
+    emergency = [input_dict['difficulty_breathing'], input_dict['blue_lips'], input_dict['chest_pain'],
+                 input_dict['dizziness'],
+                 input_dict['confusion'], input_dict['slurring'], input_dict['seizures']
+                 ]
 
     if request.method == 'POST':
         emergency_symptoms = request.form.getlist('emergency')
@@ -95,7 +106,20 @@ def emergency_data():
         else:
             input_dict['seizures'] = 0
 
-    return render_template('emergency_symptoms.html')
+        for x in emergency:
+            if x == 1:
+                url ="{{ url_for('display_medical_emergency') }}"
+            else:
+                url = "{{ url_for('exposure_data') }}"
+
+    return render_template('emergency_symptoms.html', url=url)
+
+
+@app.route('/emergency_symptoms', methods=['GET', 'POST'])
+def display_medical_emergency():
+
+    return render_template('medical_emergency.html', methods=['GET','POST'])
+
 
 
 @app.route('/exposure', methods=['GET', 'POST'])
@@ -242,28 +266,43 @@ def mental_health_data():
 @app.route('/view_survey_results')
 def display_survey_results():
     msg = ''
+    color = ""
 
-    symptoms = [input_dict['difficulty_breathing'], input_dict['blue_lips'],  input_dict['chest_pain'], input_dict['dizziness'],
-                input_dict['confusion'], input_dict['slurring'], input_dict['seizures'], input_dict['COVID_diagnosis'],
-                input_dict['positive_test'], input_dict['quarantine'],  input_dict['close_proximity'], input_dict['coughed_on'],
-                input_dict['same_house'], input_dict['fever'], input_dict['cough'], input_dict['short_breath'], input_dict['fatigue'],
-                input_dict['aches'], input_dict['headaches'], input_dict['no_taste'],  input_dict['sore_throat'],  input_dict['congestion'],
-                input_dict['nausea'], input_dict['lung_disease'], input_dict['heart_condition'], input_dict['weak_immune_system'],
-                input_dict['obesity'], input_dict['smokes'],  input_dict['diabetes'],  input_dict['high_blood_pressure'],
-                input_dict['blood_disorder'], input_dict['neurological_disorder'], input_dict['cancer']]
+    symptoms = [input_dict['difficulty_breathing'], input_dict['blue_lips'], input_dict['chest_pain'], input_dict['dizziness'],
+                input_dict['confusion'], input_dict['slurring'], input_dict['seizures'], input_dict['fever'], input_dict['cough'],
+                input_dict['short_breath'], input_dict['fatigue'], input_dict['aches'], input_dict['headaches'],
+                input_dict['no_taste'], input_dict['sore_throat'], input_dict['congestion'], input_dict['nausea'],
+                input_dict['weak_immune_system'],
+                ]
+    exposure = [input_dict['COVID_diagnosis'],
+                input_dict['positive_test'], input_dict['quarantine'], input_dict['close_proximity'],
+                input_dict['coughed_on'],
+                input_dict['same_house']]
 
     total_symptoms = 0
+
 
     # calculate severity by averaging number of check boxes
     for x in symptoms:
         if x == 1:
             total_symptoms += 1
-
-    input_dict['calculated_severity'] = round(total_symptoms / 33, 3)
+    input_dict['calculated_severity'] = round(total_symptoms / 18, 3)
 
     # immediate high severity for checking positive test or COVID diagnosis
-    if input_dict['COVID_diagnosis'] or input_dict['positive_test'] == 1:
-        input_dict['calculated_severity'] = 1.00
+    for y in exposure:
+        if y == 1:
+            input_dict['calculated_severity'] = 1.00
+
+    print(input_dict["calculated_severity"])
+
+    if input_dict['calculated_severity'] > 0.0 and input_dict['calculated_severity'] < 0.33:
+        color = "green"
+
+    elif input_dict['calculated_severity'] > 0.34 and input_dict['calculated_severity'] < 0.66:
+        color = "yellow"
+
+    else:
+        color = "red"
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
@@ -313,59 +352,58 @@ def display_survey_results():
                          %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                          %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                          %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
-                    (
-                        input_dict['first_name'],
-                        input_dict['last_name'],
-                        input_dict['zip_code'],
-                        input_dict['date_of_birth'],
-                        input_dict['household_size'],
-                        input_dict['difficulty_breathing'],
-                        input_dict['blue_lips'],
-                        input_dict['chest_pain'],
-                        input_dict['dizziness'],
-                        input_dict['confusion'],
+                   (
+                       input_dict['first_name'],
+                       input_dict['last_name'],
+                       input_dict['zip_code'],
+                       input_dict['date_of_birth'],
+                       input_dict['household_size'],
+                       input_dict['difficulty_breathing'],
+                       input_dict['blue_lips'],
+                       input_dict['chest_pain'],
+                       input_dict['dizziness'],
+                       input_dict['confusion'],
 
-                        input_dict['slurring'],
-                        input_dict['seizures'],
-                        input_dict['COVID_diagnosis'],
-                        input_dict['positive_test'],
-                        input_dict['quarantine'],
-                        input_dict['close_proximity'],
-                        input_dict['coughed_on'],
-                        input_dict['same_house'],
-                        input_dict['fever'],
-                        input_dict['cough'],
+                       input_dict['slurring'],
+                       input_dict['seizures'],
+                       input_dict['COVID_diagnosis'],
+                       input_dict['positive_test'],
+                       input_dict['quarantine'],
+                       input_dict['close_proximity'],
+                       input_dict['coughed_on'],
+                       input_dict['same_house'],
+                       input_dict['fever'],
+                       input_dict['cough'],
 
-                        input_dict['short_breath'],
-                        input_dict['fatigue'],
-                        input_dict['aches'],
-                        input_dict['headaches'],
-                        input_dict['no_taste'],
-                        input_dict['sore_throat'],
-                        input_dict['congestion'],
-                        input_dict['nausea'],
-                        input_dict['lung_disease'],
-                        input_dict['heart_condition'],
+                       input_dict['short_breath'],
+                       input_dict['fatigue'],
+                       input_dict['aches'],
+                       input_dict['headaches'],
+                       input_dict['no_taste'],
+                       input_dict['sore_throat'],
+                       input_dict['congestion'],
+                       input_dict['nausea'],
+                       input_dict['lung_disease'],
+                       input_dict['heart_condition'],
 
-                        input_dict['weak_immune_system'],
-                        input_dict['obesity'],
-                        input_dict['smokes'],
-                        input_dict['diabetes'],
-                        input_dict['high_blood_pressure'],
-                        input_dict['blood_disorder'],
-                        input_dict['neurological_disorder'],
-                        input_dict['cancer'],
-                        input_dict['feeling_today'],
-                        input_dict['calculated_severity']))
+                       input_dict['weak_immune_system'],
+                       input_dict['obesity'],
+                       input_dict['smokes'],
+                       input_dict['diabetes'],
+                       input_dict['high_blood_pressure'],
+                       input_dict['blood_disorder'],
+                       input_dict['neurological_disorder'],
+                       input_dict['cancer'],
+                       input_dict['feeling_today'],
+                       input_dict['calculated_severity']))
 
     mysql.connection.commit()
     msg = 'You have successfully completed entering the data!'
-    return render_template('view_survey_results.html')
+    return render_template('view_survey_results.html', calculated_severity = input_dict['calculated_severity'], color = color )
 
 
 @app.route('/drawMap')
 def draw_map():
-
     update()
 
     map_data = pd.read_csv('./Data/us-zip-codes-cleaned.csv')
@@ -391,7 +429,6 @@ def draw_map():
 
 
 def update():
-
     new_risk = round(input_dict['calculated_severity'] * 100, 3)
     imported_zip = input_dict['zip_code']
 
@@ -400,9 +437,9 @@ def update():
 
     df = pd.read_csv('./Data/us-zip-codes-cleaned.csv', sep=',')
 
-    df.Zipcode = df.Zipcode.astype(str)
-    df.at[(df["Zipcode"] == imported_zip), ["Risk"]] = new_risk  # + old_risk
-    df.Zipcode = df.Zipcode.astype(int)
+    df.loc[(df.Zipcode == imported_zip), 'Risk'] = new_risk
+
+    print(df.loc[(df.Zipcode == input_dict['zip_code'])])
 
     df.to_csv(r'./Data/us-zip-codes-cleaned.csv', index=False)
 
