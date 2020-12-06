@@ -81,10 +81,11 @@
 
     <center>
         <div class="slidecontainer">
-            <form method="POST" action="">
+            <form method="POST" action="{{ url_for('display_survey_results') }}">
                 <input type="range" min="0" max="10" value="5" class="slider" id="mental" name="mental">
                 <br />
                 <input type="submit" value="Submit">
+                </form>
         </div>
     </center>
 
@@ -93,8 +94,10 @@
     <br />
     <br />
 
-    <a href="{{ url_for('wellness_data') }}">Back</a>
-    <a href="{{ url_for('display_survey_results') }}">Next</a>
+    <a href="{{ url_for('wellness_data') }}">
+     <button>Back</button>
+    </a>
+
 
 
 </body>
