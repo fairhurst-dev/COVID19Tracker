@@ -106,12 +106,6 @@ def emergency_data():
         else:
             input_dict['seizures'] = 0
 
-        for x in emergency:
-            if x == 1:
-                url ="{{ url_for('display_medical_emergency') }}"
-            else:
-                url = "{{ url_for('exposure_data') }}"
-
     return render_template('emergency_symptoms.html', url=url)
 
 
@@ -166,6 +160,7 @@ def wellness_data():
     if request.method == 'POST':
 
         wellness = request.form.getlist('wellness')
+        print(wellness)
 
         if 'fever' in wellness:
             input_dict['fever'] = 1
@@ -256,9 +251,12 @@ def wellness_data():
 @app.route('/mental_health', methods=['GET', 'POST'])
 def mental_health_data():
     msg = ''
-    # ~~~~~NEED TO FIX THIS ~~~~
+    mental=[]
+
+    mental = request.form.getlist('mental')
+
     if request.method == 'POST' and 'mental' in request.form:
-        input_dict['feeling_today'] = 5
+        input_dict['feeling_today'] = mental[0]
 
     return render_template('mental_health.html', msg=msg)
 
@@ -267,12 +265,15 @@ def mental_health_data():
 def display_survey_results():
     msg = ''
     color = ""
+    likelihood= ""
+    step1 = ""
+    step2 = ""
+    step3 = ""
 
-    symptoms = [input_dict['difficulty_breathing'], input_dict['blue_lips'], input_dict['chest_pain'], input_dict['dizziness'],
-                input_dict['confusion'], input_dict['slurring'], input_dict['seizures'], input_dict['fever'], input_dict['cough'],
+    symptoms = [input_dict['difficulty_breathing'], input_dict['chest_pain'],
+                input_dict['fever'], input_dict['cough'],
                 input_dict['short_breath'], input_dict['fatigue'], input_dict['aches'], input_dict['headaches'],
                 input_dict['no_taste'], input_dict['sore_throat'], input_dict['congestion'], input_dict['nausea'],
-                input_dict['weak_immune_system'],
                 ]
     exposure = [input_dict['COVID_diagnosis'],
                 input_dict['positive_test'], input_dict['quarantine'], input_dict['close_proximity'],
@@ -286,23 +287,36 @@ def display_survey_results():
     for x in symptoms:
         if x == 1:
             total_symptoms += 1
-    input_dict['calculated_severity'] = round(total_symptoms / 18, 3)
+    input_dict['calculated_severity'] = round(total_symptoms / 12, 3)
 
     # immediate high severity for checking positive test or COVID diagnosis
     for y in exposure:
         if y == 1:
             input_dict['calculated_severity'] = 1.00
 
+    print(input_dict)
     print(input_dict["calculated_severity"])
 
     if input_dict['calculated_severity'] > 0.0 and input_dict['calculated_severity'] < 0.33:
         color = "green"
+        likelihood = "low"
+        step1 = "1. Wear a mask and practice social distancing"
+        step2 = "2. Practice good handwashing habits"
+        step3 = "3. Stay healthy"
 
     elif input_dict['calculated_severity'] > 0.34 and input_dict['calculated_severity'] < 0.66:
         color = "yellow"
+        likelihood = "medium"
+        step1 = "1. Wear a mask and practice social distancing"
+        step2 = "2. Contact a medical provider to discuss what to do next"
+        step3 = "3. Schedule a COVID-19 test if possible"
 
     else:
         color = "red"
+        likelihood = "high"
+        step1 = "1. Immediately self-quarantine for 14 days"
+        step2 = "2. Contact a medical provider and inform them of your symptoms"
+        step3 = "3. Schedule a COVID-19 test as soon as possible"
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
@@ -399,65 +413,49 @@ def display_survey_results():
 
     mysql.connection.commit()
     msg = 'You have successfully completed entering the data!'
-    return render_template('view_survey_results.html', calculated_severity = input_dict['calculated_severity'], color = color )
+    return render_template('view_survey_results.html', calculated_severity = input_dict['calculated_severity'], color=color, likelihood=likelihood, step1=step1, step2=step2, step3=step3 )
 
 
 @app.route('/drawMap')
 def draw_map():
-
     update()
 
-    map_data = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
+    map_data = pd.read_csv('./Data/us-zip-codes-cleaned.csv')
 
     lat = 40.05
     lon = -74.40
 
     starting_location = [lat, lon]  # starting location of the map depending on the inputted zipcode
-    c_map = folium.Map(location=starting_location, zoom_start=8)
-    # max_amount = map_data['Risk'].max()
-    # hm_wide = HeatMap(
-    #     list(zip(map_data.Lat.values, map_data.Long.values, map_data.Risk.values)),
-    #     min_opacity=0.0, max_zoom=9,
-    #     max_val=max_amount,
-    #     radius=25, blur=20
-    # )
-    zip_geo = f'./Data/njZIPs_4digit.json'
-    covid_risk = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
-    covid_risk.Zipcode = covid_risk.Zipcode.astype(str)
-
-    cm_wide = folium.Choropleth(
-        geo_data=zip_geo, name='Choropleth map',
-        data=covid_risk, columns=['Zipcode', 'Risk'],
-        fill_color='YlOrBr', key_on='feature.properties.GEOID10',
-        fill_opacity=0.7, line_opacity=0.2, legend_name='Risk of COVID19 exposure by assessment data'
+    h_map = folium.Map(location=starting_location, zoom_start=8)
+    max_amount = map_data['Risk'].max()
+    hm_wide = HeatMap(
+        list(zip(map_data.Lat.values, map_data.Long.values, map_data.Risk.values)),
+        min_opacity=0.1, max_zoom=9,
+        max_val=max_amount,
+        radius=25, blur=20
     )
-    # style = {'fillColor': '#00FFFFFF', 'lineColor': '#00FFFFFF'}
-    # boundaries = GeoJson('./Data/njZIPs_4digit.json', overlay=True, style_function=lambda x: style)
     # Adds the heatmap element to the map
-    c_map.add_child(cm_wide)
-    # Adds zipcode regions
-    # c_map.add_child(boundaries)
+    h_map.add_child(hm_wide)
     # Saves the map to heatmap.html
-    c_map.save(os.path.join('./templates', 'heatmap.html'))
+    h_map.save(os.path.join('./templates', 'heatmap.html'))
     # Render the heatmap
     return render_template('heatmap.html')
 
 
 def update():
-
     new_risk = round(input_dict['calculated_severity'] * 100, 3)
     imported_zip = input_dict['zip_code']
 
     if imported_zip[0] == "0":
         imported_zip = imported_zip[1:]
 
-    df = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
+    df = pd.read_csv('./Data/us-zip-codes-cleaned.csv', sep=',')
 
-    df.Zipcode = df.Zipcode.astype(str)
-    df.at[(df["Zipcode"] == imported_zip), ["Risk"]] = new_risk  # + old_risk
-    df.Zipcode = df.Zipcode.astype(int)
+    df.loc[(df.Zipcode == imported_zip), 'Risk'] = new_risk
 
-    df.to_excel(r'./Data/us-zip-codes-cleaned.xlsx', index=False)
+    print(df.loc[(df.Zipcode == input_dict['zip_code'])])
+
+    df.to_csv(r'./Data/us-zip-codes-cleaned.csv', index=False)
 
     return
 
