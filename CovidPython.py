@@ -418,44 +418,46 @@ def display_survey_results():
 
 @app.route('/drawMap')
 def draw_map():
-    update()
 
-    map_data = pd.read_csv('./Data/us-zip-codes-cleaned.csv')
+    update()
 
     lat = 40.05
     lon = -74.40
 
-    starting_location = [lat, lon]  # starting location of the map depending on the inputted zipcode
-    h_map = folium.Map(location=starting_location, zoom_start=8)
-    max_amount = map_data['Risk'].max()
-    hm_wide = HeatMap(
-        list(zip(map_data.Lat.values, map_data.Long.values, map_data.Risk.values)),
-        min_opacity=0.1, max_zoom=9,
-        max_val=max_amount,
-        radius=25, blur=20
+    starting_location = [lat, lon]
+    c_map = folium.Map(location=starting_location, zoom_start=8)
+    
+    zip_geo = f'./Data/njZIPs_4digit.json'
+    covid_risk = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
+    covid_risk.Zipcode = covid_risk.Zipcode.astype(str)
+
+    cm_wide = folium.Choropleth(
+        geo_data=zip_geo, name='Choropleth map',
+        data=covid_risk, columns=['Zipcode', 'Risk'],
+        fill_color='YlOrBr', key_on='feature.properties.GEOID10',
+        fill_opacity=0.7, line_opacity=0.2, legend_name='Risk of COVID19 exposure by assessment data'
     )
-    # Adds the heatmap element to the map
-    h_map.add_child(hm_wide)
-    # Saves the map to heatmap.html
-    h_map.save(os.path.join('./templates', 'heatmap.html'))
-    # Render the heatmap
+   
+    c_map.add_child(cm_wide)
+    c_map.save(os.path.join('./templates', 'heatmap.html'))
     return render_template('heatmap.html')
 
 
 def update():
+
     new_risk = round(input_dict['calculated_severity'] * 100, 3)
     imported_zip = input_dict['zip_code']
 
     if imported_zip[0] == "0":
         imported_zip = imported_zip[1:]
 
-    df = pd.read_csv('./Data/us-zip-codes-cleaned.csv', sep=',')
+    df = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
 
-    df.loc[(df.Zipcode == imported_zip), 'Risk'] = new_risk
+    df.Zipcode = df.Zipcode.astype(str)
+    df.at[(df["Zipcode"] == imported_zip), ["Risk"]] = new_risk  # + old_risk
+    df.Zipcode = df.Zipcode.astype(int)
 
-    print(df.loc[(df.Zipcode == input_dict['zip_code'])])
-
-    df.to_csv(r'./Data/us-zip-codes-cleaned.csv', index=False)
+    df.to_excel(r'./Data/us-zip-codes-cleaned.xlsx', index=False)
 
     return
 
