@@ -437,7 +437,7 @@ def draw_map():
         fill_color='YlOrBr', key_on='feature.properties.GEOID10',
         fill_opacity=0.7, line_opacity=0.2, legend_name='Risk of COVID19 exposure by assessment data'
     )
-   
+    
     c_map.add_child(cm_wide)
     c_map.save(os.path.join('./templates', 'heatmap.html'))
     return render_template('heatmap.html')
