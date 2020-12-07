@@ -54,7 +54,7 @@
 </head>
 
 <body>
-    <img class="mySlides" src="{{ url_for('static',filename='templates/banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
+    <img class="mySlides" src="{{ url_for('static',filename='static/banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
 
     <div class="navbar">
         <center>
@@ -85,7 +85,7 @@
                 <td>
 
                     <center>
-                        <img src="sad.png" alt="sad" style="width:50px;">
+                        <img src="{{ url_for('static',filename='static/sad.png') }}sad.png" alt="sad" style="width:50px;">
                         <p>Sad</p>
                     </center>
                     
@@ -106,7 +106,7 @@
                 </td>
                 <td >
                     <center>
-                        <img src="happy.png" alt="happy" style="width:50px">
+                        <img src="{{ url_for('static',filename='static/happy.png') }}" alt="happy" style="width:50px">
                         <p> Happy</p>
                     </center>
                 </td>
