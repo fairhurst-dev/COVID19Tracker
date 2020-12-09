@@ -412,11 +412,11 @@ def display_survey_results():
                        input_dict['calculated_severity']))
 
     mysql.connection.commit()
+    draw_map()
     msg = 'You have successfully completed entering the data!'
     return render_template('view_survey_results.html', calculated_severity = input_dict['calculated_severity'], color=color, likelihood=likelihood, step1=step1, step2=step2, step3=step3 )
 
 
-@app.route('/drawMap')
 def draw_map():
 
     update()
@@ -426,7 +426,7 @@ def draw_map():
 
     starting_location = [lat, lon]
     c_map = folium.Map(location=starting_location, zoom_start=8)
-    
+
     zip_geo = f'./Data/njZIPs_4digit.json'
     covid_risk = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
     covid_risk.Zipcode = covid_risk.Zipcode.astype(str)
@@ -437,10 +437,10 @@ def draw_map():
         fill_color='YlOrBr', key_on='feature.properties.GEOID10',
         fill_opacity=0.7, line_opacity=0.2, legend_name='Risk of COVID19 exposure by assessment data'
     )
-    
+
     c_map.add_child(cm_wide)
     c_map.save(os.path.join('./templates', 'heatmap.html'))
-    return render_template('heatmap.html')
+    return
 
 
 def update():
@@ -448,16 +448,17 @@ def update():
     new_risk = round(input_dict['calculated_severity'] * 100, 3)
     imported_zip = input_dict['zip_code']
 
-    if imported_zip[0] == "0":
+    if imported_zip[0] == '0':
         imported_zip = imported_zip[1:]
 
+    imported_zip = int(imported_zip)
+
     df = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
+    df.set_index('Zipcode', inplace=True)
+    df.at[imported_zip, 'Risk'] = df.at[imported_zip, 'Risk'] + new_risk
+    df.reset_index()
 
-    df.Zipcode = df.Zipcode.astype(str)
-    df.at[(df["Zipcode"] == imported_zip), ["Risk"]] = new_risk  # + old_risk
-    df.Zipcode = df.Zipcode.astype(int)
-
-    df.to_excel(r'./Data/us-zip-codes-cleaned.xlsx', index=False)
+    df.to_excel(r'./Data/us-zip-codes-cleaned.xlsx')
 
     return
 
