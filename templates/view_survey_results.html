@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <style>
     .severity {
         color: {{ color }};
@@ -6,6 +6,7 @@
         font-weight: bold;
         font-size: xx-large;
     }
+
 </style>
 
 <html>
@@ -19,12 +20,12 @@
 </head>
 <body>
 
-    <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
+    <img class="mySlides" src="{{ url_for('static',filename='banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
 
     <div class="navbar">
         <center>
             <a href="{{ url_for('baseline_data') }}">Home</a>
-            <a href="{{ url_for('draw_map') }}">Heatmap</a>
+            <a href="{{ url_for('display_map') }}">Heatmap</a>
             <a href="https://covid19.nj.gov">Resources</a>
         </center>
 
@@ -36,14 +37,22 @@
 
     <h2 style="text-align:center;">Your calculated likeliness of having COVID-19 is: </h2>
     <br />
-    <br />
 
     <h1 class="severity" style="text-align:center;">{{calculated_severity}}</h1>
+
+    <div class="steps">
+        <h3 style="text-align:center">This is considered a {{likelihood}} likelihood of having COVID-19. We recommend that you:</h3>
+        <h3 style="text-align:left">{{step1}}</h3>
+        <h3 style="text-align:left">{{step2}}</h3>
+        <h3 style="text-align:left">{{step3}}</h3>
+    </div>
+
     <br />
     <br />
 
-    <h3 style="text-align:center;">Please consult free COVID-19 testing sites here.</h3> <!--add link to this item-->
-    <h3 style="text-align:center;">Or contact your medical provider.</h3>
+    <h3 style="text-align:center"><a href="https://Covid19.nj.gov/">covid19.nj.gov</a></h3>
+    <h3 style="text-align:center"><a href="https://covid19.nj.gov/pages/testing">View New Jersey Testing locations here</a></h3>
+
 
 
 

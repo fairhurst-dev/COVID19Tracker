@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -10,12 +10,12 @@
 </head>
 
 <body>
-     <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
+     <img class="mySlides" src="{{ url_for('static',filename='banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
 
     <div class="navbar">
         <center>
             <a href="{{ url_for('baseline_data') }}">Home</a>
-            <a href="{{ url_for('draw_map') }}">Heatmap</a>
+            <a href="{{ url_for('display_map') }}">Heatmap</a>
             <a href="https://covid19.nj.gov">Resources</a>
         </center>
     </div>
@@ -35,13 +35,13 @@
             <input type="checkbox" id="short_breath" name="wellness" value="short_breath">
             <label for="short_breath">Shortness of breath</label><br>
 
-            <input type="checkbox" id="fatigue" name="wellness" value="1">
+            <input type="checkbox" id="fatigue" name="wellness" value="fatigue">
             <label for="fatigue">Fatigue</label><br>
 
-            <input type="checkbox" id="aches" name="wellness" value="fatigue">
+            <input type="checkbox" id="aches" name="wellness" value="aches">
             <label for="aches">Muscle or body aches</label><br />
 
-            <input type="checkbox" id="headaches" name="headaches" value="headaches">
+            <input type="checkbox" id="headaches" name="wellness" value="headaches">
             <label for="headaches">Headaches</label><br />
 
             <input type="checkbox" id="no_taste" name="wellness" value="no_taste">
@@ -96,7 +96,11 @@
 
     </div>
 
-    <a href="{{ url_for('exposure_data') }}">Back</a>
-    <a href="{{ url_for('mental_health_data') }}">Next</a>
+    <a href="{{ url_for('exposure_data') }}">
+        <button>Back</button>
+    </a>
+    <a href="{{ url_for('mental_health_data') }}">
+        <button>Next</button>
+    </a>
 
 </body>

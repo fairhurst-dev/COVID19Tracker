@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,11 +10,11 @@
 </head>
 
 <body>
-    <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg}" alt="custom_html_banner1" style="width:100%">
+    <img class="mySlides" src="{{ url_for('static',filename='banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
     <div class="navbar">
         <center>
             <a href="{{ url_for('baseline_data') }}">Home</a>
-            <a href="{{ url_for('draw_map') }}">Heatmap</a>
+            <a href="{{ url_for('display_map') }}">Heatmap</a>
             <a href="https://covid19.nj.gov">Resources</a>
         </center>
     </div>
@@ -27,7 +27,7 @@
 
 
     <div class="checkbox form exposure">
-        <form method="POST" action="{{ url_for('wellness_data') }}">
+        <form method="POST" action="">
             <input type="checkbox" id="diagnosed" name="exposure" value="diagnosed">
             <label for="diagnosed">Been diagnosed with COVID-19?</label><br>
             <input type="checkbox" id="positive" name="exposure" value="positive">
@@ -50,6 +50,9 @@
 
     <a href="{{ url_for('emergency_data') }}">
         <button>Back</button>
+    </a>
+    <a href="{{ url_for('wellness_data') }}">
+        <button>Next</button>
     </a>
 
 

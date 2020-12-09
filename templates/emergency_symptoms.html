@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <style>
@@ -16,12 +16,12 @@
 </head>
 
 <body>
-    <img class="mySlides" src="https://i.imgur.com/uA9vemT.jpg" alt="custom_html_banner1" style="width:100%">
+   <img class="mySlides" src="{{ url_for('static',filename='banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
 
     <div class="navbar">
         <center>
             <a class="active" href="{{ url_for('baseline_data') }}">Home</a>
-            <a href="{{ url_for('draw_map') }}">Heatmap</a>
+            <a href="{{ url_for('display_map') }}">Heatmap</a>
             <a href="https://covid19.nj.gov">Resources</a>
         </center>
     </div>
@@ -41,7 +41,7 @@
             <input type="checkbox" id="chest" name="emergency" value="chest">
             <label for="chest">Severe pain or pressure in the chest</label><br>
             <input type="checkbox" id="dizziness" name="emergency" value="dizziness">
-            <label for="dizziness">Sever constant dizziness or light-headeness</label><br>
+            <label for="dizziness">Severe constant dizziness or light-headeness</label><br>
             <input type="checkbox" id="confused" name="emergency" value="confused">
             <label for="confused">Acting confused</label><br>
             <input type="checkbox" id="speech" name="emergency" value="speech">
@@ -59,9 +59,10 @@
     <a href="{{ url_for('baseline_data') }}">
         <button>Back</button>
     </a>
+    <a href="{{ url_for('exposure_data') }}">
+        <button>Next</button>
+    </a>
 
-
-    <!-- <a class="redirect">Next</a>-->
 
 
 

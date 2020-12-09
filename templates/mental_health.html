@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!-- Got help with slider styling with https://www.w3schools.com/howto/howto_js_rangeslider.asp -->
 <style>
 
@@ -54,12 +54,12 @@
 </head>
 
 <body>
-    <img class="mySlides" src="{{ url_for('static',filename='static/banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
+     <img class="mySlides" src="{{ url_for('static',filename='banner.jpg') }}" alt="custom_html_banner1" style="width:100%">
 
     <div class="navbar">
         <center>
             <a href="{{ url_for('baseline_data') }}">Home</a>
-            <a href="{{ url_for('draw_map') }}">Heatmap</a>
+            <a href="{{ url_for('display_map') }}">Heatmap</a>
             <a href="https://covid19.nj.gov">Resources</a>
         </center>
     </div>
@@ -85,15 +85,15 @@
                 <td>
 
                     <center>
-                        <img src="{{ url_for('static',filename='static/sad.png') }}sad.png" alt="sad" style="width:50px;">
+                        <img src="{{ url_for('static',filename='sad.png') }}" alt="sad" style="width:50px;">
                         <p>Sad</p>
                     </center>
-                    
+
                 </td>
                 <td style="width:90%;">
                     <center>
                         <div class="slidecontainer">
-                            <form method="POST" action="{{ url_for('display_survey_results') }}">
+                            <form method="POST" action="">
                                 <center>
                                     <input type="range" min="0" max="10" value="5" class="slider" id="mental" name="mental" >
                                 </center>
@@ -106,7 +106,7 @@
                 </td>
                 <td >
                     <center>
-                        <img src="{{ url_for('static',filename='static/happy.png') }}" alt="happy" style="width:50px">
+                        <img src="{{ url_for('static',filename='happy.png') }}" alt="happy" style="width:50px">
                         <p> Happy</p>
                     </center>
                 </td>
@@ -118,9 +118,17 @@
     <br />
     <br />
     <br />
-        
+
+     <h3 style="text-align:center"><a>New Jersey Suicide Prevention hotline:</a></h3>
+     <h3 style="text-align:center"><a>(855)-654-6735</a></h3>
+     <h3 style="text-align:center"><a href="https://www.nj.gov/humanservices/dmhas/home/hotlines/index.html">Click here to view more NJ mental health resources</a></h3>
+
+
     <a href="{{ url_for('wellness_data') }}">
      <button>Back</button>
+    </a>
+    <a href="{{ url_for('display_survey_results') }}">
+       <button>Next</button>
     </a>
 
 
