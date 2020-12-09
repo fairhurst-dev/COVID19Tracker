@@ -427,7 +427,7 @@ def draw_map():
     c_map = folium.Map(location=starting_location, zoom_start=8)
 
     zip_geo = f'./Data/njZIPs_4digit.json'
-    covid_risk = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
+    covid_risk = pd.read_excel('./Data/nj-zip-code-data.xlsx')
     covid_risk.Zipcode = covid_risk.Zipcode.astype(str)
 
     cm_wide = folium.Choropleth(
@@ -452,12 +452,12 @@ def update():
 
     imported_zip = int(imported_zip)
 
-    df = pd.read_excel('./Data/us-zip-codes-cleaned.xlsx')
+    df = pd.read_excel('./Data/nj-zip-code-data.xlsx')
     df.set_index('Zipcode', inplace=True)
     df.at[imported_zip, 'Risk'] = df.at[imported_zip, 'Risk'] + new_risk
     df.reset_index()
 
-    df.to_excel(r'./Data/us-zip-codes-cleaned.xlsx')
+    df.to_excel(r'./Data/nj-zip-code-data.xlsx')
 
     return
 
